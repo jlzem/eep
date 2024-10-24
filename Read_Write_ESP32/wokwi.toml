@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = './read_write_esp32.bin'
+elf = './read_write_esp32.elf'
