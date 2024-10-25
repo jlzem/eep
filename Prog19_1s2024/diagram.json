@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "author": "Disciplinas EEP",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": -157.6, "left": 41.6, "attrs": {} },
+    {
+      "type": "wokwi-lcd1602",
+      "id": "lcd1",
+      "top": 217.6,
+      "left": 389.6,
+      "attrs": { "pins": "i2c", "i2c-address": "0x22" }
+    },
+    {
+      "type": "wokwi-lcd1602",
+      "id": "lcd2",
+      "top": 73.6,
+      "left": 389.6,
+      "attrs": { "pins": "i2c", "i2c-address": "0x21" }
+    },
+    {
+      "type": "wokwi-lcd1602",
+      "id": "lcd3",
+      "top": -70.4,
+      "left": 389.6,
+      "attrs": { "pins": "i2c", "i2c-address": "0x20" }
+    }
+  ],
+  "connections": [
+    [ "uno:GND.2", "lcd1:GND", "black", [ "v0" ] ],
+    [ "uno:5V", "lcd1:VCC", "red", [ "v0" ] ],
+    [ "lcd1:SDA", "uno:A4.2", "yellow", [ "h0" ] ],
+    [ "lcd1:SCL", "uno:A5.2", "blue", [ "h0" ] ],
+    [ "lcd1:GND", "lcd2:GND", "black", [ "h-19.2", "v-144" ] ],
+    [ "lcd2:GND", "lcd3:GND", "black", [ "h-19.2", "v-144" ] ],
+    [ "lcd1:VCC", "lcd2:VCC", "red", [ "h-28.8", "v-143.9" ] ],
+    [ "lcd2:VCC", "lcd3:VCC", "red", [ "h-28.8", "v-143.9" ] ],
+    [ "lcd1:SDA", "lcd2:SDA", "yellow", [ "h-38.4", "v0.2" ] ],
+    [ "lcd2:SDA", "lcd3:SDA", "yellow", [ "h-38.4", "v0.2" ] ],
+    [ "lcd1:SCL", "lcd2:SCL", "blue", [ "h-48", "v-153.3" ] ],
+    [ "lcd2:SCL", "lcd3:SCL", "blue", [ "h-48", "v-143.7" ] ]
+  ],
+  "dependencies": {}
+}
