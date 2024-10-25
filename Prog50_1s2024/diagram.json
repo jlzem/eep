@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "author": "Disciplinas EEP",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": -76.2, "left": 105, "attrs": {} },
+    { "type": "wokwi-ds1307", "id": "rtc1", "top": -43.8, "left": 460.9, "attrs": {} }
+  ],
+  "connections": [
+    [ "rtc1:5V", "uno:5V", "red", [ "h-38.4", "v162.8", "h-167" ] ],
+    [ "rtc1:GND", "uno:GND.2", "black", [ "h-48", "v163.2", "h-147.9" ] ],
+    [ "rtc1:SDA", "uno:A4.2", "yellow", [ "h-28.8", "v162.9", "h-239.6" ] ],
+    [ "rtc1:SCL", "uno:A5.2", "blue", [ "h-19.2", "v163", "h-259.2" ] ]
+  ],
+  "dependencies": {}
+}
