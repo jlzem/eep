@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = './ExemploMotordePasso.hex'
+elf = './ExemploMotordePasso.elf'

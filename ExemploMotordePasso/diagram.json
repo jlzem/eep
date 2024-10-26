@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 160.98, "left": -237.02, "attrs": {} },
+    {
+      "type": "wokwi-stepper-motor",
+      "id": "stepper1",
+      "top": -139.16,
+      "left": -191.26,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-analog-joystick",
+      "id": "joystick1",
+      "top": -61.54,
+      "left": 53.61,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [ "stepper1:B-", "uno:8", "green", [ "v0" ] ],
+    [ "stepper1:A-", "uno:11", "green", [ "v0" ] ],
+    [ "stepper1:B+", "uno:9", "green", [ "v0" ] ],
+    [ "stepper1:A+", "uno:10", "green", [ "v0" ] ],
+    [ "joystick1:VERT", "uno:A0", "purple", [ "v321.33", "h-126.2" ] ],
+    [ "joystick1:HORZ", "uno:A1", "green", [ "v336.6", "h-126.64" ] ],
+    [ "joystick1:GND", "uno:GND.3", "black", [ "v345.76", "h4.85" ] ],
+    [ "joystick1:VCC", "uno:5V", "red", [ "v356.96", "h-160.38" ] ],
+    [ "joystick1:SEL", "uno:2", "orange", [ "v77.99", "h-114.86" ] ]
+  ]
+}
