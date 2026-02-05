@@ -1,0 +1,151 @@
+#include <WiFi.h>
+#include <WebServer.h>
+
+const char* ssid     = "Wokwi-GUEST";
+const char* password = "";
+
+const int LED_PIN = LED_BUILTIN; // geralmente D4 / GPIO2
+
+bool ledState = false; // false=off, true=on
+
+WebServer server(80);
+
+void setLed(bool on) {
+  ledState = on;
+  digitalWrite(LED_PIN, on ? LOW : HIGH);
+}
+
+void raiz() {
+  String html =
+    "<!doctype html><html><head>"
+    "<meta charset='utf-8'>"
+    "<meta name='viewport' content='width=device-width, initial-scale=1'>"
+    "<title>NodeMCU</title>"
+    "<style>body{font-family:Arial;padding:20px;} .card{padding:16px;border:1px solid #ccc;border-radius:12px;max-width:420px;}</style>"
+    "</head><body>"
+    "<div class='card'>"
+    "<h2>Servidor ESP32</h2>"
+    "<p>Oi mundo 👋</p>"
+    "</div>"
+    "</body></html>";
+  server.send(200, "text/html; charset=utf-8", html);
+}
+
+void NaoEncontrado() {
+  server.send(404, "text/plain; charset=utf-8", "404 - Nao encontrado");
+}
+
+void estado() {
+  server.send(200, "text/plain; charset=utf-8", "OK - Servidor Ativo");
+}
+
+void atividade() {
+  server.send(200, "text/plain; charset=utf-8", String(millis() / 1000));
+}
+
+void api01() {
+  String json = "{";
+  json += "\"device\":\"NodeMCU\",";
+  json += "\"ip\":\"" + WiFi.localIP().toString() + "\",";
+  json += "\"rssi\":" + String(WiFi.RSSI()) + ",";
+  json += "\"uptime_ms\":" + String(millis() / 1000);
+  json += "}";
+  server.send(200, "application/json; charset=utf-8", json);
+}
+
+void ledOn() {
+  digitalWrite(LED_PIN, LOW); // liga
+  server.send(200, "text/plain; charset=utf-8", "LED ligado");
+  setLed(true);
+}
+
+void ledOff() {
+  digitalWrite(LED_PIN, HIGH); // liga
+  server.send(200, "text/plain; charset=utf-8", "LED desligado");
+  setLed(false);
+}
+
+void led() {
+  if (!server.hasArg("state")) {
+    server.send(400, "text/plain; charset=utf-8", "Use: /led?state=on ou /led?state=off");
+    return;
+  }
+
+  String state = server.arg("state");
+  state.toLowerCase();
+
+  if (state == "on") {
+    digitalWrite(LED_PIN, LOW);
+    server.send(200, "text/plain; charset=utf-8", "LED ligado");
+  } else if (state == "off") {
+    digitalWrite(LED_PIN, HIGH);
+    server.send(200, "text/plain; charset=utf-8", "LED desligado");
+  } else {
+    server.send(400, "text/plain; charset=utf-8", "state invalido: use on/off");
+  }
+}
+
+void apiLedGet() {
+  String json = "{";
+  json += "\"led\":" + String(ledState ? "true" : "false");
+  json += "}";
+  server.send(200, "application/json; charset=utf-8", json);
+}
+
+void apiLedSet() {
+  if (!server.hasArg("state")) {
+    server.send(400, "text/plain; charset=utf-8", "Envie state=on ou state=off");
+    return;
+  }
+
+  String state = server.arg("state");
+  state.toLowerCase();
+
+  if (state == "on") setLed(true);
+  else if (state == "off") setLed(false);
+  else {
+    server.send(400, "text/plain; charset=utf-8", "state invalido");
+    return;
+  }
+
+  server.send(200, "application/json; charset=utf-8", String("{\"ok\":true,\"led\":") + (ledState ? "true" : "false") + "}");
+}
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, HIGH); // começa desligado (ativo LOW)
+
+  Serial.begin(115200);
+  delay(100);
+
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+
+  Serial.print("Conectando ao Wi-Fi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("\nConectado!");
+  Serial.print("IP do ESP32: ");
+  Serial.println(WiFi.localIP());
+
+  server.on("/", raiz);
+  server.onNotFound(NaoEncontrado);
+  server.on("/status", estado);
+  server.on("/uptime", atividade);
+  server.on("/api01", api01);
+  server.on("/led/on", ledOn);
+  server.on("/led/off", ledOff);
+  server.on("/led", led);
+  server.on("/api/ledget", HTTP_GET, apiLedGet);
+  server.on("/api/ledset", HTTP_POST, apiLedSet);
+
+  server.begin();
+  Serial.println("Servidor HTTP iniciado!");
+}
+
+void loop() {
+  server.handleClient();
+}
