@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "author": "Disciplinas EEP",
+  "editor": "wokwi",
+  "parts": [ { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 14.3, "left": 52.6, "attrs": {} } ],
+  "connections": [ [ "esp:TX0", "$serialMonitor:RX", "", [] ], [ "esp:RX0", "$serialMonitor:TX", "", [] ] ],
+  "dependencies": {}
+}
