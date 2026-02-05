@@ -77,9 +77,11 @@ void led() {
   if (state == "on") {
     digitalWrite(LED_PIN, LOW);
     server.send(200, "text/plain; charset=utf-8", "LED ligado");
+    setLed(true);
   } else if (state == "off") {
     digitalWrite(LED_PIN, HIGH);
     server.send(200, "text/plain; charset=utf-8", "LED desligado");
+    setLed(false);
   } else {
     server.send(400, "text/plain; charset=utf-8", "state invalido: use on/off");
   }
