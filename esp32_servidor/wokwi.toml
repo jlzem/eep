@@ -7,3 +7,4 @@ elf = './firmware.elf'
 [[net.forward]]
 from = "localhost:8180"
 to = "target:80"
+visibility = "public"
