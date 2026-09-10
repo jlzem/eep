@@ -1,1 +1,1 @@
-#Cálculo do Fatorial de N (sequêncial).
+# Cálculo do Fatorial de N (sequêncial).
