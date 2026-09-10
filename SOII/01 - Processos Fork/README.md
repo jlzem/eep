@@ -1,1 +1,1 @@
-# 01 - Processos FORK (Processos Tradicionais).
+# 01 - Processos FORK (Processo do Tipo Tradicional).
